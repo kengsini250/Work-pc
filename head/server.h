@@ -22,17 +22,17 @@ public:
     }
 
     void getSelect(const qintptr);
+    void sendData(qintptr ,const DataType&);
 protected:
     void incomingConnection(qintptr socketDescriptor);
 private:
     QMap<qintptr,QTcpSocket*> AllClient;
-    void makedata(DataType* , QByteArray);
 
-signals:
+Q_SIGNALS:
     void newClient();
     void ClientAndPidGet(const qintptr,const QByteArray&);
     void discon(const qintptr);
-    void DATA(const DataType&);
+    void DATA(const ConnectType&);
 };
 
 #endif // SERVER_H

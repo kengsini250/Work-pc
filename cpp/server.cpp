@@ -1,10 +1,9 @@
-#include "server.h"
+#include "head/server.h"
 #include <QDebug>
 
 Server::Server(QMainWindow *p):QTcpServer(p)
 {
     listen(QHostAddress::Any,55555);
-
 }
 
 void Server::incomingConnection(qintptr socketDescriptor)
@@ -16,11 +15,12 @@ void Server::incomingConnection(qintptr socketDescriptor)
     connect(now,&QTcpSocket::readyRead,[=](){
         QByteArray myPid = now->readAll();
 
-        if(myPid[0]=='%')
+        if(myPid[0]==START)
         {
-           DataType dataTemp;
-           makedata(&dataTemp,myPid);
-           emit DATA(dataTemp);
+           ConnectType connectTemp;
+           MakeData md(myPid);
+           connectTemp = md.makeData();
+           emit DATA(connectTemp);
         }
         else
             emit ClientAndPidGet(socketDescriptor,myPid);
@@ -28,33 +28,13 @@ void Server::incomingConnection(qintptr socketDescriptor)
     });
     AllClient.insert(socketDescriptor, now);
 
-    connect(now,&QTcpSocket::disconnected,[=](){
+    connect(now,&QTcpSocket::disconnected,[=]{
         AllClient.remove(socketDescriptor);
         emit discon(socketDescriptor);
     });
 
 
     return emit QTcpServer::newConnection ();
-}
-
-void Server::makedata(DataType *temp, QByteArray data)
-{
-    int count=1;
-    for(auto a = data.begin()+1;(*a)!='|';a++)
-    {
-        temp->ip.push_back(*a);
-        count++;
-    }
-    for(auto a = data.begin()+count+1;(*a)!='|';a++)
-    {
-        temp->port.push_back(*a);
-        count++;
-    }
-    for(auto a = data.begin()+count+2;(*a)!='&';a++)
-    {
-        temp->state.push_back(*a);
-        count++;
-    }
 }
 
 void Server::getSelect(qintptr i)
@@ -69,6 +49,14 @@ void Server::getSelect(qintptr i)
             now->write("GET_DATA");
         }
     }
-    //connect(now,&QTcpSocket::readyRead,[=](){
-    //QByteArray data = now->readAll()
+}
+
+void Server::sendData(qintptr sockedDescriptor, const DataType & data)
+{
+    auto p = AllClient.begin();
+    for(;sockedDescriptor!=p.key();p++);
+    p.value()->
+                write(QString::number(data.a).toUtf8()+MID+
+               QString::number(data.b).toUtf8()+MID+
+               QString::number(data.c).toUtf8()+END);
 }

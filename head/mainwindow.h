@@ -3,7 +3,10 @@
 
 #include <QMainWindow>
 #include "server.h"
-#include "mainui_A.h"
+
+#include "head/Products_Base/ui_main_class.h"
+#include "head/Products/productA.h"
+
 #include "dataformat.h"
 
 namespace Ui {
@@ -20,14 +23,13 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    UI_Main_Class* MainUI;
+
     Server* server;
     QMap<qintptr,QString> AllPid;
-    mainui_A* MainUI;
 
-    DataType dataTemp;
+    ConnectType connectTemp;
 
-signals:
-    void getAllData(const qintptr&);
 };
 
 #endif // MAINWINDOW_H
