@@ -1,9 +1,14 @@
 #include "head/server.h"
 #include <QDebug>
 
-Server::Server(QMainWindow *p):QTcpServer(p)
+Server::Server(QMainWindow *p)noexcept:QTcpServer(p)
 {
     listen(QHostAddress::Any,55555);
+}
+
+int Server::getClientCount()noexcept
+{
+    return AllClient.count();
 }
 
 void Server::incomingConnection(qintptr socketDescriptor)
@@ -17,10 +22,10 @@ void Server::incomingConnection(qintptr socketDescriptor)
 
         if(myPid[0]==START)
         {
-           ConnectType connectTemp;
-           MakeData md(myPid);
-           connectTemp = md.makeData();
-           emit DATA(connectTemp);
+            ConnectType connectTemp;
+            MakeData md(myPid);
+            connectTemp = md.makeData();
+            emit DATA(connectTemp);
         }
         else
             emit ClientAndPidGet(socketDescriptor,myPid);
@@ -37,7 +42,7 @@ void Server::incomingConnection(qintptr socketDescriptor)
     return emit QTcpServer::newConnection ();
 }
 
-void Server::getSelect(qintptr i)
+void Server::getSelect(qintptr i)noexcept
 {
     QTcpSocket* now = new QTcpSocket(this);
     auto p = AllClient.begin();
@@ -51,12 +56,12 @@ void Server::getSelect(qintptr i)
     }
 }
 
-void Server::sendData(qintptr sockedDescriptor, const DataType & data)
+void Server::sendData(qintptr sockedDescriptor, const DataType & data)noexcept
 {
     auto p = AllClient.begin();
     for(;sockedDescriptor!=p.key();p++);
     p.value()->
-                write(QString::number(data.a).toUtf8()+MID+
-               QString::number(data.b).toUtf8()+MID+
-               QString::number(data.c).toUtf8()+END);
+            write(QString::number(data.a).toUtf8()+MID+
+                  QString::number(data.b).toUtf8()+MID+
+                  QString::number(data.c).toUtf8()+END);
 }

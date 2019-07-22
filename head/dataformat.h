@@ -1,12 +1,30 @@
+/**
+ * @file dataformat.h
+ * @author orz (kengsini250@gmail.com)
+ * @brief
+ * @version 0.1
+ * @date 2019-07-22
+ *
+ * @copyright Copyright (c) 2019
+ *
+ */
+
 #ifndef DATAFORMAT_H
 #define DATAFORMAT_H
 
 #include <QByteArray>
 
+//-------------------------------
+//data formart sign
+//-------------------------------
 #define START '%'
 #define MID '|'
 #define END '&'
 
+/**
+  * @brief connecting Type and \n
+  * state formart
+  */
 typedef struct
 {
     QByteArray pid;
@@ -15,6 +33,9 @@ typedef struct
     QByteArray state;
 }ConnectType;
 
+/**
+  @brief Data formart
+  */
 typedef struct
 {
     QByteArray pid;
@@ -23,6 +44,10 @@ typedef struct
     int c;
 }DataType;
 
+/**
+ * @brief The MakeData class \n
+ * QByteArray to  @see ConnectType
+ */
 class MakeData
 {
 private:

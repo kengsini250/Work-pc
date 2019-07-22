@@ -1,3 +1,14 @@
+/**
+ * @file server.h
+ * @author orz (kengsini250@gmail.com)
+ * @brief
+ * @version 0.1
+ * @date 2019-07-22
+ *
+ * @copyright Copyright (c) 2019
+ *
+ */
+
 #ifndef SERVER_H
 #define SERVER_H
 
@@ -15,18 +26,21 @@ class Server : public QTcpServer
     Q_OBJECT
 
 public:
-    explicit Server(QMainWindow *p = nullptr);
-    int getClientCount()
-    {
-        return AllClient.count();
-    }
-
-    void getSelect(const qintptr);
-    void sendData(qintptr ,const DataType&);
+    explicit Server(QMainWindow *p = nullptr)noexcept;
+    int getClientCount()noexcept;
+    void getSelect(const qintptr)noexcept;
+    void sendData(qintptr ,const DataType&)noexcept;
 protected:
-    void incomingConnection(qintptr socketDescriptor);
+    void incomingConnection(qintptr socketDescriptor)override;
 private:
-    QMap<qintptr,QTcpSocket*> AllClient;
+
+    /**
+     * @brief AllClient
+     * @brief qintptr     socket
+     * @brief QTcpSocket* Client
+     */
+    QMap<qintptr,QTcpSocket*> AllClient;///< qintptr     -> socket
+                                        ///< QTcpSocket* -> Client
 
 Q_SIGNALS:
     void newClient();
