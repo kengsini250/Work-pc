@@ -29,16 +29,14 @@ class Product_A: public QWidget,public UI_Main_Class
 public:
     explicit Product_A();
 
-    /**
-     * @brief Product_A
-     * @param s         server
-     * @param _socket   socket
-     * @param _pid      pid
-     * @param _ip       ip
-     * @param _port     port
-     * @param _state    state
-     */
-    explicit Product_A(Server* s ,qintptr _socket,QByteArray _pid, QByteArray _ip, QByteArray _port, QByteArray _state);
+    virtual void setSocketID(qintptr s)override;
+    virtual void setSocket(QTcpSocket* s)override;
+    virtual void setPid(QByteArray byte)override;
+    virtual void setIp(QByteArray byte)override;
+    virtual void setPort(QByteArray byte)override;
+    virtual void setState(QByteArray byte)override;
+
+    virtual void setServer(Server* s)override;
 
     ~Product_A()override;
 
@@ -49,8 +47,14 @@ public Q_SLOTS:
 
 private:
     Ui::productA *ui;
-    QByteArray pid = "";
-    qintptr socket;
+
+    qintptr socketID;
+    QTcpSocket* socket;
+    QByteArray pid;
+    QByteArray ip;
+    QByteArray port;
+    QByteArray state;
+
     Server* server;
 };
 

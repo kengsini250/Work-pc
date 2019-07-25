@@ -247,7 +247,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>TestLabel</string>
    </property>
   </widget>
  </widget>

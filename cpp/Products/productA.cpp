@@ -1,19 +1,10 @@
 #include "head/Products/productA.h"
 #include "ui_productA.h"
 
-Product_A::Product_A(Server* s ,qintptr _socket,QByteArray _pid, QByteArray _ip, QByteArray _port, QByteArray _state):
-    ui(new Ui::productA),pid(_pid),socket(_socket)
+Product_A::Product_A():
+    ui(new Ui::productA)
 {
     ui->setupUi(this);
-
-    setPid(ui->PidText,pid);
-    setIp(ui->IpText,_ip);
-    setPort(ui->PortText,_port);
-    setState(ui->StateText,_state);
-    server = new Server;
-    server = s;
-    //test
-    ui->TestLabel2->setText(QString::number(socket));
 
     connect(ui->SendButton,&QAbstractButton::clicked,this,&Product_A::get_send_Data);
     connect(ui->CancelButton,&QAbstractButton::clicked,[=]{
@@ -21,22 +12,50 @@ Product_A::Product_A(Server* s ,qintptr _socket,QByteArray _pid, QByteArray _ip,
     });
 }
 
-Product_A::Product_A()
+void Product_A::setSocketID(qintptr s)
 {
-    ui->setupUi(this);
-
-    connect(ui->SendButton,&QAbstractButton::clicked,this,&Product_A::get_send_Data);
-
-    connect(ui->CancelButton,&QAbstractButton::clicked,[=]{
-        this->close();
-    });
-
+    socketID = s;
+    ui->TestLabel2->setText(QString::number(s));
 }
+
+void Product_A::setSocket(QTcpSocket *s)
+{
+    socket = s;
+}
+
+void Product_A::setPid(QByteArray byte)
+{
+    pid = byte;
+    ui->PidText->setText(byte);
+}
+
+void Product_A::setIp(QByteArray byte)
+{
+    ip = byte;
+    ui->IpText->setText(byte);
+}
+
+void Product_A::setPort(QByteArray byte)
+{
+    port = byte;
+    ui->PortText->setText(byte);
+}
+
+void Product_A::setState(QByteArray byte)
+{
+    state = byte;
+    ui->StateText->setText(byte);
+}
+
+void Product_A::setServer(Server *s)
+{
+ server = s;
+}
+
 
 Product_A::~Product_A()
 {
     delete ui;
-    delete server;
 }
 
 void Product_A::get_send_Data()
@@ -51,7 +70,7 @@ void Product_A::get_send_Data()
     data.c  = temp_c;
 
     data.pid = pid;
-    send(server,data,socket);
+    send(server,data,socketID);
 }
 
 void Product_A::_show()

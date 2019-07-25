@@ -28,7 +28,13 @@ class Server : public QTcpServer
 public:
     explicit Server(QMainWindow *p = nullptr)noexcept;
     int getClientCount()noexcept;
-    void getSelect(const qintptr)noexcept;
+
+    /**
+     * @brief getSelect
+     * @return QTcoSocket
+     */
+    QTcpSocket* getSelect(qintptr i)noexcept;
+
     void sendData(qintptr ,const DataType&)noexcept;
 protected:
     void incomingConnection(qintptr socketDescriptor)override;
@@ -46,7 +52,9 @@ Q_SIGNALS:
     void newClient();
     void ClientAndPidGet(const qintptr,const QByteArray&);
     void discon(const qintptr);
+
     void DATA(const ConnectType&);
+
 };
 
 #endif // SERVER_H

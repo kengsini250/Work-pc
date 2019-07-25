@@ -44,6 +44,11 @@ typedef struct
     int c;
 }DataType;
 
+typedef struct{
+    QByteArray pid;
+    int a;
+}DataTypeB;
+
 /**
  * @brief The MakeData class \n
  * QByteArray to  @see ConnectType

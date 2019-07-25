@@ -20,12 +20,16 @@ INCLUDEPATH += .
 CONFIG += c++11
 
 HEADERS += head/dataformat.h \
+           head/Products/productB.h \
            head/mainwindow.h \
+           head/product_factory.h \
            head/server.h \
            head/Products/productA.h \
            head/Products_Base/ui_main_class.h
-FORMS += ui/mainwindow.ui ui/UI_Temp.ui ui/Products/productA.ui
+FORMS += ui/mainwindow.ui ui/UI_Temp.ui ui/Products/productA.ui \
+    ui/Products/productB.ui
 SOURCES += main.cpp \
+           cpp/Products/productB.cpp \
            cpp/mainwindow.cpp \
            cpp/server.cpp \
            cpp/Products/productA.cpp \

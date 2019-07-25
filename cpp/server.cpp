@@ -15,18 +15,21 @@ void Server::incomingConnection(qintptr socketDescriptor)
 {
     QTcpSocket* now = new QTcpSocket(this);
 
-
     now->setSocketDescriptor(socketDescriptor);
     connect(now,&QTcpSocket::readyRead,[=](){
         QByteArray myPid = now->readAll();
 
+        //have data
         if(myPid[0]==START)
         {
             ConnectType connectTemp;
             MakeData md(myPid);
             connectTemp = md.makeData();
+            //sand data
             emit DATA(connectTemp);
         }
+
+        //first connect
         else
             emit ClientAndPidGet(socketDescriptor,myPid);
         myPid.clear();
@@ -37,23 +40,14 @@ void Server::incomingConnection(qintptr socketDescriptor)
         AllClient.remove(socketDescriptor);
         emit discon(socketDescriptor);
     });
-
-
     return emit QTcpServer::newConnection ();
 }
 
-void Server::getSelect(qintptr i)noexcept
+QTcpSocket* Server::getSelect(qintptr i)noexcept
 {
-    QTcpSocket* now = new QTcpSocket(this);
-    auto p = AllClient.begin();
-    for(;p!=AllClient.end();p++)
-    {
-        if(p.key()==i)
-        {
-            now=p.value();
-            now->write("GET_DATA");
-        }
-    }
+    auto p = AllClient.find(i);
+    p.value()->write("GET_DATA");
+    return p.value();
 }
 
 void Server::sendData(qintptr sockedDescriptor, const DataType & data)noexcept

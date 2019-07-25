@@ -24,48 +24,28 @@
 class UI_Main_Class
 {
 public:
-    virtual ~UI_Main_Class(){}
-    /**
-     * @brief setPid
-     * @param l Label
-     * @param byte Data
-     */
-    virtual void setPid(QLabel *l,QByteArray byte);
-    virtual void setIp(QLabel *l,QByteArray byte);
-    virtual void setPort(QLabel *l,QByteArray byte);
-    virtual void setState(QLabel *l,QByteArray byte);
+    virtual ~UI_Main_Class();
+
+    virtual void setSocketID(qintptr s) = 0;
+    virtual void setSocket(QTcpSocket* s) = 0;
+    virtual void setPid(QByteArray byte) = 0;
+    virtual void setIp(QByteArray byte) = 0;
+    virtual void setPort(QByteArray byte) = 0;
+    virtual void setState(QByteArray byte) = 0;
+
+    virtual void setServer(Server* s) = 0;
 
     /**
-     * @brief setPid
-     * @param byte Data
-     */
-    virtual void setPid(QByteArray byte);
-    virtual void setIp(QByteArray byte);
-    virtual void setPort(QByteArray byte);
-    virtual void setState(QByteArray byte);
-
-    /**
-     * @brief send
+     * @brief send data
      * @param s Server
      * @param d Data
      * @param socket Target
      */
-    void send(Server*s,DataType&d,qintptr socket);
+    virtual void send(Server*s,DataType&d,qintptr socket);
 
 public Q_SLOTS:
     virtual void get_send_Data(){}
     virtual void _show(){}
-
-private:
-    /**
-     * @brief socket Target
-     */
-    qintptr socket;
-    QByteArray pid;
-    QByteArray ip;
-    QByteArray port;
-    QByteArray state;
-
 };
 
 #endif // UI_INTERFACE_H

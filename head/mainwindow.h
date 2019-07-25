@@ -12,10 +12,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "product_factory.h"
+
 #include <QMainWindow>
 #include "server.h"
 #include "head/Products_Base/ui_main_class.h"
 #include "head/Products/productA.h"
+#include "head/Products/productB.h"
 
 #include "dataformat.h"
 
@@ -42,18 +45,24 @@ private:
 
     /**
      * @brief AllPid
-     * @brief qintptr socket
+     * @brief qintptr socketID
      * @brief QString pid
      */
-    QMap<qintptr,QString> AllPid;///< qintptr -> socket
+    QMap<qintptr,QString> AllPid;///< qintptr -> socketID
                                  ///< QString -> pid
 
     /**
      * @brief getProduct
-     * @param QString pid
+     * @param s pid
      * @return product
      */
-    int getProduct(QString);
+    int getProduct(QString s);
+
+    /**
+     * @brief Factory
+     * 
+     */
+    Factory* factory;
 
     ConnectType connectTemp;
 };
